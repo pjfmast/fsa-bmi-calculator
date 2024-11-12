@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">BMI Calc</string>
+    <string name="enter_height_and_weight">Enter a height and a weight:</string>
+    <string name="height">height (cm)</string>
+    <string name="weight">weight (kg)</string>
+    <string name="your_bmi">Your BMI: %1$s</string>
+</resources>

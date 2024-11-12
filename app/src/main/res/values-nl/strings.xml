@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_height_and_weight">Geef een lengte en gewicht:</string>
+    <string name="height">lengte (cm)</string>
+    <string name="weight">gewicht (kg)</string>
+    <string name="your_bmi">Jouw BMI: %1$s</string>
+</resources>
