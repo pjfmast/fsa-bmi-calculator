@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,16 +22,15 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import avans.avd.bmicalc.ui.theme.BMICalcTheme
 import avans.avd.bmicalc.ui.theme.PurpleGrey80
@@ -66,7 +63,7 @@ fun BmiLayout(modifier: Modifier = Modifier) {
 
     val length = lengthInput.toIntOrNull() ?: 0
     val weight = weightInput.toIntOrNull() ?: 0
-    val bmi = calculateBmi(length, weight)
+    val bmi = bmiText(length, weight)
 
     // Surface vs Box: https://stackoverflow.com/questions/65918835/when-should-i-use-android-jetpack-composes-surface-composable
     Surface(
@@ -78,10 +75,12 @@ fun BmiLayout(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            Box(modifier = Modifier
-                .padding(top = 40.dp)
-                .background(PurpleGrey80)
-                .fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 80.dp)
+                    .background(PurpleGrey80)
+                    .fillMaxWidth()
+            ) {
                 Text("BMI Calculator", style = MaterialTheme.typography.headlineMedium)
             }
             Text(
@@ -91,7 +90,7 @@ fun BmiLayout(modifier: Modifier = Modifier) {
                     .padding(top = 40.dp, bottom = 20.dp)
             )
 
-           EditNumberField(
+            EditNumberField(
                 value = lengthInput,
                 onValueChanged = { lengthInput = it },
                 label = stringResource(R.string.height)
@@ -142,21 +141,25 @@ fun EditNumberField(
     )
 }
 
-private fun calculateBmi(height: Int, weight: Int): String {
-    var bmiText: String = ""
+private fun bmiText(height: Int, weight: Int): String {
+    val bmi = calculateBMI(height, weight)
+    val roundedBMI = bmi
+        ?.toBigDecimal()
+        ?.setScale(1, RoundingMode.HALF_UP)
+        ?.toString()
+        ?: "BMI cannot be calculated"
 
-    if (height > 0 && weight > 0) {
-        val lengthInMeter = height / 100.0
-        val bmi = (weight / (lengthInMeter.pow(2)))
-        val roundedBMI = bmi.toBigDecimal().setScale(1, RoundingMode.HALF_UP)
-
-        bmiText = roundedBMI.toString()
-    }
-
-    return bmiText
+    return roundedBMI
 }
 
+private fun calculateBMI(height: Int, weight: Int): Double? {
+    return if (height > 0 && weight > 0) {
+        val lengthInMeter = height / 100.0
+        weight / (lengthInMeter.pow(2))
+    } else null
+}
 
+@PreviewLightDark()
 @Preview(showBackground = true, locale = "nl")
 @Composable
 fun GreetingPreview() {
