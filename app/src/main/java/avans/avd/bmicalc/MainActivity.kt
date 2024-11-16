@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -26,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -141,13 +143,14 @@ fun EditNumberField(
     )
 }
 
+@Composable
 private fun bmiText(height: Int, weight: Int): String {
     val bmi = calculateBMI(height, weight)
     val roundedBMI = bmi
         ?.toBigDecimal()
         ?.setScale(1, RoundingMode.HALF_UP)
         ?.toString()
-        ?: "BMI cannot be calculated"
+        ?: stringResource(R.string.bmi_cannot_be_calculated)
 
     return roundedBMI
 }
@@ -168,3 +171,23 @@ fun GreetingPreview() {
     }
 }
 
+@Preview
+@Composable
+fun MyComposable() {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.LightGray)) {
+        Text(
+            text = "Hello, Compose!",
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(16.dp)
+        )
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .background(Color.Blue)
+                .align(Alignment.TopEnd)
+        )
+    }
+}

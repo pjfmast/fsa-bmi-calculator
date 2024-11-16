@@ -4,4 +4,5 @@
     <string name="height">lengte (cm)</string>
     <string name="weight">gewicht (kg)</string>
     <string name="your_bmi">Jouw BMI: %1$s</string>
+    <string name="bmi_cannot_be_calculated">BMI kan niet worden berekend.</string>
 </resources>
